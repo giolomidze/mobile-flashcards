@@ -4,7 +4,6 @@ import {
   StyleSheet,
   TouchableOpacity,
   Platform,
-  View,
   TextInput,
   KeyboardAvoidingView
 } from "react-native";
@@ -24,14 +23,9 @@ function SubmitBtn({ onPress }) {
 }
 
 export default class AddDeck extends React.Component {
-  state = {
-    deckTitle: ""
-  };
-
   submit = () => {
-    this.props.addDeck(this.state.deckTitle);
+    this.addDeck(this.state.deckTitle);
   };
-
   onChange = input => {
     this.setState({
       deckTitle: input

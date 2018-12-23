@@ -1,62 +1,83 @@
 import React from "react";
-import { View, StyleSheet, AsyncStorage } from "react-native";
+import {
+  View,
+  StyleSheet,
+  AsyncStorage,
+  Platform,
+  StatusBar
+} from "react-native";
 import AddDeck from "./components/AddDeck";
 import Decks from "./components/Decks";
+import { TabNavigator, StackNavigator } from "react-navigation";
+import { FontAwesome, Ionicons } from "@expo/vector-icons";
+import { Constants } from "expo";
+import { white, purple } from "./utils/colors";
 
-export default class App extends React.Component {
-  async componentDidMount() {
-    const decks = await AsyncStorage.getItem("Decks");
-
-    if (decks === null) {
-      AsyncStorage.setItem("Decks", JSON.stringify(this.state.decks));
+const Tabs = TabNavigator(
+  {
+    Decks: {
+      screen: Decks,
+      navigationOptions: {
+        tabBarLabel: "Decks",
+        tabBarIcon: ({ tintColor }) => (
+          <Ionicons name="ios-bookmarks" size={30} color={tintColor} />
+        )
+      }
+    },
+    AddDeck: {
+      screen: AddDeck,
+      navigationOptions: {
+        tabBarLabel: "Add Deck",
+        tabBarIcon: ({ tintColor }) => (
+          <FontAwesome name="plus-square" size={30} color={tintColor} />
+        )
+      }
+    }
+  },
+  {
+    navigationOptions: {
+      header: null
+    },
+    tabBarOptions: {
+      activeTintColor: Platform.OS === "ios" ? purple : white,
+      style: {
+        height: 56,
+        backgroundColor: Platform.OS === "ios" ? white : purple,
+        shadowColor: "rgba(0, 0, 0, 0.24)",
+        shadowOffset: {
+          width: 0,
+          height: 3
+        },
+        shadowRadius: 6,
+        shadowOpacity: 1
+      }
     }
   }
+);
 
+const MainNavigator = StackNavigator({
+  Home: {
+    screen: Tabs
+  }
+});
+
+function UdaciStatusBar({ backgroundColor, ...props }) {
+  return (
+    <View style={{ backgroundColor, height: Constants.statusBarHeight }}>
+      <StatusBar translucent backgroundColor={backgroundColor} {...props} />
+    </View>
+  );
+}
+
+export default class App extends React.Component {
   state = {
-    decks: {
-      React: {
-        title: "React",
-        questions: [
-          {
-            question: "What is React?",
-            answer: "A library for managing user interfaces"
-          },
-          {
-            question: "Where do you make Ajax requests in React?",
-            answer: "The componentDidMount lifecycle event"
-          }
-        ]
-      },
-      JavaScript: {
-        title: "JavaScript",
-        questions: [
-          {
-            question: "What is a closure?",
-            answer:
-              "The combination of a function and the lexical environment within which that function was declared."
-          }
-        ]
-      }
-    }
+    test: "stateTest"
   };
-
-  addDeck = deckTitle => {
-    this.setState({
-      decks: {
-        ...this.state.decks,
-        [deckTitle]: {
-          title: deckTitle,
-          questions: []
-        }
-      }
-    });
-  };
-
   render() {
     return (
-      <View style={styles.container}>
-        <AddDeck addDeck={this.addDeck} />
-        <Decks decks={this.state.decks} />
+      <View style={{ flex: 1 }}>
+        <UdaciStatusBar backgroundColor={purple} barStyle="light-content" />
+        <MainNavigator screenProps={this.state.test} />
       </View>
     );
   }
