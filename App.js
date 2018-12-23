@@ -6,6 +6,7 @@ import Decks from "./components/Decks";
 export default class App extends React.Component {
   async componentDidMount() {
     const decks = await AsyncStorage.getItem("Decks");
+
     if (decks === null) {
       AsyncStorage.setItem("Decks", JSON.stringify(this.state.decks));
     }
@@ -39,10 +40,22 @@ export default class App extends React.Component {
     }
   };
 
+  addDeck = deckTitle => {
+    this.setState({
+      decks: {
+        ...this.state.decks,
+        [deckTitle]: {
+          title: deckTitle,
+          questions: []
+        }
+      }
+    });
+  };
+
   render() {
     return (
       <View style={styles.container}>
-        <AddDeck />
+        <AddDeck addDeck={this.addDeck} />
         <Decks decks={this.state.decks} />
       </View>
     );

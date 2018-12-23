@@ -4,7 +4,9 @@ import {
   StyleSheet,
   TouchableOpacity,
   Platform,
-  View
+  View,
+  TextInput,
+  KeyboardAvoidingView
 } from "react-native";
 import { purple, white } from "../utils/colors";
 
@@ -22,16 +24,27 @@ function SubmitBtn({ onPress }) {
 }
 
 export default class AddDeck extends React.Component {
+  state = {
+    deckTitle: ""
+  };
+
   submit = () => {
-    console.warn("The button has been clicked");
+    this.props.addDeck(this.state.deckTitle);
+  };
+
+  onChange = input => {
+    this.setState({
+      deckTitle: input
+    });
   };
 
   render() {
     return (
-      <View>
+      <KeyboardAvoidingView behavior="padding">
         <Text>Add Deck Component</Text>
+        <TextInput onChangeText={this.onChange} />
         <SubmitBtn onPress={this.submit} />
-      </View>
+      </KeyboardAvoidingView>
     );
   }
 }
