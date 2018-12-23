@@ -4,8 +4,11 @@ import AddDeck from "./components/AddDeck";
 import Decks from "./components/Decks";
 
 export default class App extends React.Component {
-  componentDidMount() {
-    AsyncStorage.setItem("Decks", JSON.stringify(this.state.decks));
+  async componentDidMount() {
+    const decks = await AsyncStorage.getItem("Decks");
+    if (decks === null) {
+      AsyncStorage.setItem("Decks", JSON.stringify(this.state.decks));
+    }
   }
 
   state = {
