@@ -1,7 +1,8 @@
 import React from 'react';
-import { AsyncStorage, Text } from 'react-native';
+import { AsyncStorage, Text, TouchableOpacity, StyleSheet } from 'react-native';
 import { connect } from 'react-redux';
 import { receiveEntries } from '../actions';
+import { white, purple } from '../utils/colors';
 
 class Decks extends React.Component {
   state = {
@@ -45,8 +46,13 @@ class Decks extends React.Component {
     return (
       !this.props.isLoading &&
       Object.keys(this.props.decks).map(deck => {
-        const { title } = this.props.decks[deck];
-        return <Text key={title}>{title}</Text>;
+        const { title, questions } = this.props.decks[deck];
+        return (
+          <TouchableOpacity key={title} style={styles.button}>
+            <Text>{title}</Text>
+            <Text>{questions.length} cards</Text>
+          </TouchableOpacity>
+        );
       })
     );
   }
@@ -62,5 +68,26 @@ function mapStateToProps(state) {
     decks,
   };
 }
+
+const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+    justifyContent: 'center',
+    paddingHorizontal: 10,
+  },
+  button: {
+    alignItems: 'center',
+    backgroundColor: '#DDDDDD',
+    padding: 10,
+    margin: 10,
+  },
+  countContainer: {
+    alignItems: 'center',
+    padding: 10,
+  },
+  countText: {
+    color: '#FF00FF',
+  },
+});
 
 export default connect(mapStateToProps)(Decks);
