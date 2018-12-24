@@ -1,64 +1,67 @@
-import React from "react";
+import React from 'react';
 import {
   View,
   StyleSheet,
   AsyncStorage,
   Platform,
-  StatusBar
-} from "react-native";
-import AddDeck from "./components/AddDeck";
-import Decks from "./components/Decks";
-import { TabNavigator, StackNavigator } from "react-navigation";
-import { FontAwesome, Ionicons } from "@expo/vector-icons";
-import { Constants } from "expo";
-import { white, purple } from "./utils/colors";
+  StatusBar,
+} from 'react-native';
+import AddDeck from './components/AddDeck';
+import Decks from './components/Decks';
+import { TabNavigator, StackNavigator } from 'react-navigation';
+import { FontAwesome, Ionicons } from '@expo/vector-icons';
+import { Constants } from 'expo';
+import { white, purple } from './utils/colors';
+import { createStore } from 'redux';
+import { Provider } from 'react-redux';
+import reducer from './reducers';
 
 const Tabs = TabNavigator(
   {
     Decks: {
       screen: Decks,
       navigationOptions: {
-        tabBarLabel: "Decks",
+        tabBarLabel: 'Decks',
         tabBarIcon: ({ tintColor }) => (
           <Ionicons name="ios-bookmarks" size={30} color={tintColor} />
-        )
-      }
+        ),
+      },
     },
     AddDeck: {
       screen: AddDeck,
       navigationOptions: {
-        tabBarLabel: "Add Deck",
+        tabBarLabel: 'Add Deck',
         tabBarIcon: ({ tintColor }) => (
           <FontAwesome name="plus-square" size={30} color={tintColor} />
-        )
-      }
-    }
+        ),
+      },
+    },
   },
   {
     navigationOptions: {
-      header: null
+      header: null,
     },
     tabBarOptions: {
-      activeTintColor: Platform.OS === "ios" ? purple : white,
+      activeTintColor: Platform.OS === 'ios' ? purple : white,
       style: {
         height: 56,
-        backgroundColor: Platform.OS === "ios" ? white : purple,
-        shadowColor: "rgba(0, 0, 0, 0.24)",
+        backgroundColor: Platform.OS === 'ios' ? white : purple,
+        shadowColor: 'rgba(0, 0, 0, 0.24)',
         shadowOffset: {
           width: 0,
-          height: 3
+          height: 3,
         },
         shadowRadius: 6,
-        shadowOpacity: 1
-      }
-    }
+        shadowOpacity: 1,
+      },
+    },
   }
 );
 
 const MainNavigator = StackNavigator({
   Home: {
-    screen: Tabs
-  }
+    screen: Tabs,
+  },
 });
 
 function UdaciStatusBar({ backgroundColor, ...props }) {
@@ -71,23 +74,16 @@ function UdaciStatusBar({ backgroundColor, ...props }) {
 
 export default class App extends React.Component {
   state = {
-    test: "stateTest"
+    test: 'stateTest',
   };
   render() {
     return (
-      <View style={{ flex: 1 }}>
-        <UdaciStatusBar backgroundColor={purple} barStyle="light-content" />
-        <MainNavigator screenProps={this.state.test} />
-      </View>
+      <Provider store={createStore(reducer)}>
+        <View style={{ flex: 1 }}>
+          <UdaciStatusBar backgroundColor={purple} barStyle="light-content" />
+          <Tabs />
+        </View>
+      </Provider>
     );
   }
 }
-
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: "#fff",
-    alignItems: "center",
-    justifyContent: "center"
-  }
-});

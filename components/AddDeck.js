@@ -1,19 +1,22 @@
-import React from "react";
+import React from 'react';
 import {
   Text,
   StyleSheet,
   TouchableOpacity,
   Platform,
   TextInput,
-  KeyboardAvoidingView
-} from "react-native";
-import { purple, white } from "../utils/colors";
+  KeyboardAvoidingView,
+} from 'react-native';
+import { purple, white } from '../utils/colors';
+import { connect } from 'react-redux';
+import { addEntry } from '../actions';
+import { NavigationActions } from 'react-navigation';
 
 function SubmitBtn({ onPress }) {
   return (
     <TouchableOpacity
       style={
-        Platform.OS === "ios" ? styles.iosSubmitBtn : styles.AndroidSubmitBtn
+        Platform.OS === 'ios' ? styles.iosSubmitBtn : styles.AndroidSubmitBtn
       }
       onPress={onPress}
     >
@@ -22,13 +25,20 @@ function SubmitBtn({ onPress }) {
   );
 }
 
-export default class AddDeck extends React.Component {
-  submit = () => {
-    this.addDeck(this.state.deckTitle);
+class AddDeck extends React.Component {
+  state = {
+    deckTitle: '',
   };
+
+  submit = () => {
+    this.props.dispatch(addEntry(this.state.deckTitle));
+    this.props.navigation.goBack();
+    // this.props.navigation.dispatch(NavigationActions.back({ key: 'Decks' }));
+  };
+
   onChange = input => {
     this.setState({
-      deckTitle: input
+      deckTitle: input,
     });
   };
 
@@ -47,12 +57,12 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     padding: 20,
-    backgroundColor: white
+    backgroundColor: white,
   },
   row: {
-    flexDirection: "row",
+    flexDirection: 'row',
     flex: 1,
-    alignItems: "center"
+    alignItems: 'center',
   },
   iosSubmitBtn: {
     backgroundColor: purple,
@@ -60,7 +70,7 @@ const styles = StyleSheet.create({
     borderRadius: 7,
     height: 45,
     marginLeft: 40,
-    marginRight: 40
+    marginRight: 40,
   },
   AndroidSubmitBtn: {
     backgroundColor: purple,
@@ -69,20 +79,22 @@ const styles = StyleSheet.create({
     paddingRight: 30,
     height: 45,
     borderRadius: 2,
-    alignSelf: "flex-end",
-    justifyContent: "center",
-    alignItems: "center"
+    alignSelf: 'flex-end',
+    justifyContent: 'center',
+    alignItems: 'center',
   },
   submitBtnText: {
     color: white,
     fontSize: 22,
-    textAlign: "center"
+    textAlign: 'center',
   },
   center: {
     flex: 1,
-    justifyContent: "center",
-    alignItems: "center",
+    justifyContent: 'center',
+    alignItems: 'center',
     marginLeft: 30,
-    marginRight: 30
-  }
+    marginRight: 30,
+  },
 });
+
+export default connect()(AddDeck);
