@@ -8,10 +8,11 @@ import {
 } from 'react-native';
 import AddDeck from './components/AddDeck';
 import Decks from './components/Decks';
+import DeckDetails from './components/DeckDetails';
 import { TabNavigator, StackNavigator } from 'react-navigation';
 import { FontAwesome, Ionicons } from '@expo/vector-icons';
 import { Constants } from 'expo';
-import { white, purple } from './utils/colors';
+import { white, purple, gray } from './utils/colors';
 import { createStore } from 'redux';
 import { Provider } from 'react-redux';
 import reducer from './reducers';
@@ -61,6 +62,15 @@ const Tabs = TabNavigator(
 const MainNavigator = StackNavigator({
   Home: {
     screen: Tabs,
+  },
+  DeckDetails: {
+    screen: DeckDetails,
+    navigationOptions: {
+      headerTintColor: white,
+      headerStyle: {
+        backgroundColor: gray,
+      },
+    },
   },
 });
 

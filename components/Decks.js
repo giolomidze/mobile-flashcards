@@ -48,7 +48,15 @@ class Decks extends React.Component {
       Object.keys(this.props.decks).map(deck => {
         const { title, questions } = this.props.decks[deck];
         return (
-          <TouchableOpacity key={title} style={styles.button}>
+          <TouchableOpacity
+            key={title}
+            style={styles.button}
+            onPress={() =>
+              this.props.navigation.navigate('DeckDetails', {
+                deck,
+              })
+            }
+          >
             <Text>{title}</Text>
             <Text>{questions.length} cards</Text>
           </TouchableOpacity>
@@ -60,7 +68,6 @@ class Decks extends React.Component {
 
 function mapStateToProps(state) {
   const { decks } = state;
-  console.log(state);
 
   return {
     state,
