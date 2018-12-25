@@ -8,6 +8,7 @@ import {
 } from 'react-native';
 import { connect } from 'react-redux';
 import { white, purple, blue } from '../utils/colors';
+import { addQuestion } from '../actions';
 
 class AddQuestion extends React.Component {
   state = {
@@ -15,15 +16,42 @@ class AddQuestion extends React.Component {
     answer: '',
   };
 
+  submit = () => {
+    const { deck } = this.props.navigation.state.params;
+
+    this.props.dispatch(
+      addQuestion({
+        deck: deck,
+        question: this.state.question,
+        answer: this.state.answer,
+      })
+    );
+
+    this.props.navigation.goBack();
+    // this.props.navigation.dispatch(NavigationActions.back({ key: 'Decks' }));
+  };
+
+  onQuestionChange = input => {
+    this.setState({
+      question: input,
+    });
+  };
+
+  onAnswerChange = input => {
+    this.setState({
+      answer: input,
+    });
+  };
+
   render() {
     return (
       <KeyboardAvoidingView style={styles.container} behavior="padding">
         <Text>Question</Text>
-        <TextInput style={styles.input} onChangeText={this.onChange} />
+        <TextInput style={styles.input} onChangeText={this.onQuestionChange} />
         <Text>Answer</Text>
-        <TextInput style={styles.input} onChangeText={this.onChange} />
+        <TextInput style={styles.input} onChangeText={this.onAnswerChange} />
         <TouchableOpacity>
-          <Text>SUBMIT</Text>
+          <Text onPress={this.submit}>SUBMIT</Text>
         </TouchableOpacity>
       </KeyboardAvoidingView>
     );

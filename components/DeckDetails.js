@@ -40,6 +40,7 @@ class DeckDetails extends React.Component {
 
 function mapStateToProps(state) {
   const { decks } = state;
+  console.log('decks', decks);
 
   return {
     state,
