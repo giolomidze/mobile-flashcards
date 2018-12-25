@@ -1,7 +1,7 @@
 import React from 'react';
 import { Text, TouchableOpacity, StyleSheet, View } from 'react-native';
 import { gray } from '../utils/colors';
-import { getDeck } from '../utils/api';
+import { getDeck, getDecks } from '../utils/api';
 
 export default class DeckDetails extends React.Component {
   state = {
@@ -13,7 +13,9 @@ export default class DeckDetails extends React.Component {
   };
 
   async componentDidMount() {
-    getDeck(this.props.navigation.state.params.deck).then(deck => {
+    const deckId = this.props.navigation.state.params.deck;
+    getDeck(deckId).then(deck => {
+      console.log('get one deck: ', deck);
       this.setState({
         isLoading: typeof deck.questions.length < 1,
         deck,

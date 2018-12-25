@@ -13,12 +13,24 @@ export function submitEntry({ entry, key }) {
 }
 
 export async function getDecks() {
-  return await AsyncStorage.getItem(FLASH_CARD_DECKS_STORAGE_KEY);
+  return JSON.parse(await AsyncStorage.getItem(FLASH_CARD_DECKS_STORAGE_KEY));
 }
 
-export async function getDeck(deck) {
-  const decks = JSON.parse(await getDecks());
-  return await decks[deck];
+export async function getDeck(deckId) {
+  const decks = await getDecks();
+  return await decks[deckId];
+}
+
+export async function saveDeckTitle(deckTitle) {
+  return AsyncStorage.mergeItem(
+    FLASH_CARD_DECKS_STORAGE_KEY,
+    JSON.stringify({
+      [deckTitle]: {
+        title: deckTitle,
+        questions: [],
+      },
+    })
+  );
 }
 
 // getDecks: return all of the decks along with their titles, questions, and answers.

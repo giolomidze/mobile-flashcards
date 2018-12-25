@@ -11,6 +11,7 @@ import { purple, white, blue } from '../utils/colors';
 import { connect } from 'react-redux';
 import { addEntry } from '../actions';
 import { NavigationActions } from 'react-navigation';
+import { saveDeckTitle } from '../utils/api';
 
 function SubmitBtn({ onPress }) {
   return (
@@ -33,6 +34,7 @@ class AddDeck extends React.Component {
   submit = () => {
     this.props.dispatch(addEntry(this.state.deckTitle));
     this.props.navigation.goBack();
+    saveDeckTitle(this.state.deckTitle);
     // this.props.navigation.dispatch(NavigationActions.back({ key: 'Decks' }));
   };
 
