@@ -5,10 +5,12 @@ import {
   AsyncStorage,
   Platform,
   StatusBar,
+  ScrollView,
 } from 'react-native';
 import AddDeck from './components/AddDeck';
 import Decks from './components/Decks';
 import DeckDetails from './components/DeckDetails';
+import AddQuestion from './components/AddQuestion';
 import { TabNavigator, StackNavigator } from 'react-navigation';
 import { FontAwesome, Ionicons } from '@expo/vector-icons';
 import { Constants } from 'expo';
@@ -72,6 +74,15 @@ const MainNavigator = StackNavigator({
       },
     },
   },
+  AddQuestion: {
+    screen: AddQuestion,
+    navigationOptions: {
+      headerTintColor: white,
+      headerStyle: {
+        backgroundColor: gray,
+      },
+    },
+  },
 });
 
 function UdaciStatusBar({ backgroundColor, ...props }) {
@@ -83,9 +94,6 @@ function UdaciStatusBar({ backgroundColor, ...props }) {
 }
 
 export default class App extends React.Component {
-  state = {
-    test: 'stateTest',
-  };
   render() {
     return (
       <Provider store={createStore(reducer)}>

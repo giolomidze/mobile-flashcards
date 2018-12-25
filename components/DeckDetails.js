@@ -20,7 +20,14 @@ class DeckDetails extends React.Component {
           {this.props.decks[deck].questions.length} cards
         </Text>
 
-        <TouchableOpacity style={styles.button}>
+        <TouchableOpacity
+          style={styles.button}
+          onPress={() =>
+            this.props.navigation.navigate('AddQuestion', {
+              deck,
+            })
+          }
+        >
           <Text>Add Card</Text>
         </TouchableOpacity>
         <TouchableOpacity style={styles.button}>

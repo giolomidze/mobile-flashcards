@@ -1,5 +1,11 @@
 import React from 'react';
-import { AsyncStorage, Text, TouchableOpacity, StyleSheet } from 'react-native';
+import {
+  AsyncStorage,
+  Text,
+  TouchableOpacity,
+  StyleSheet,
+  ScrollView,
+} from 'react-native';
 import { connect } from 'react-redux';
 import { receiveEntries } from '../actions';
 import { white, purple } from '../utils/colors';
@@ -44,24 +50,26 @@ class Decks extends React.Component {
 
   render() {
     return (
-      !this.props.isLoading &&
-      Object.keys(this.props.decks).map(deck => {
-        const { title, questions } = this.props.decks[deck];
-        return (
-          <TouchableOpacity
-            key={title}
-            style={styles.button}
-            onPress={() =>
-              this.props.navigation.navigate('DeckDetails', {
-                deck,
-              })
-            }
-          >
-            <Text>{title}</Text>
-            <Text>{questions.length} cards</Text>
-          </TouchableOpacity>
-        );
-      })
+      <ScrollView>
+        {!this.props.isLoading &&
+          Object.keys(this.props.decks).map(deck => {
+            const { title, questions } = this.props.decks[deck];
+            return (
+              <TouchableOpacity
+                key={title}
+                style={styles.button}
+                onPress={() =>
+                  this.props.navigation.navigate('DeckDetails', {
+                    deck,
+                  })
+                }
+              >
+                <Text>{title}</Text>
+                <Text>{questions.length} cards</Text>
+              </TouchableOpacity>
+            );
+          })}
+      </ScrollView>
     );
   }
 }
