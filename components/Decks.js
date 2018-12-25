@@ -9,6 +9,8 @@ import {
 import { connect } from 'react-redux';
 import { receiveEntries } from '../actions';
 import { white, purple } from '../utils/colors';
+import { FLASH_CARD_DECKS_STORAGE_KEY } from '../utils/_flashcards';
+import { getDecks } from '../utils/api';
 
 class Decks extends React.Component {
   state = {
@@ -41,10 +43,13 @@ class Decks extends React.Component {
 
   async componentDidMount() {
     this.props.dispatch(receiveEntries(this.state.decks));
-    const decks = await AsyncStorage.getItem('Decks');
+    const decks = await getDecks();
 
     if (decks === null) {
-      AsyncStorage.setItem('Decks', JSON.stringify(this.state.decks));
+      AsyncStorage.setItem(
+        FLASH_CARD_DECKS_STORAGE_KEY,
+        JSON.stringify(this.state.decks)
+      );
     }
   }
 

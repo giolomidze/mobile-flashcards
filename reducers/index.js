@@ -1,7 +1,6 @@
 import { RECEIVE_ENTRIES, ADD_ENTRY, ADD_QUESTION } from '../actions';
 
 function entries(state = {}, action) {
-  console.log(action);
   switch (action.type) {
     case RECEIVE_ENTRIES:
       return {

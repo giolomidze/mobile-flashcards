@@ -1,12 +1,5 @@
 import React from 'react';
-import {
-  View,
-  StyleSheet,
-  AsyncStorage,
-  Platform,
-  StatusBar,
-  ScrollView,
-} from 'react-native';
+import { View, Platform, StatusBar } from 'react-native';
 import AddDeck from './components/AddDeck';
 import Decks from './components/Decks';
 import DeckDetails from './components/DeckDetails';

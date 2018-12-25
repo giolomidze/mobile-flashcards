@@ -1,24 +1,37 @@
 import React from 'react';
-import {
-  AsyncStorage,
-  Text,
-  TouchableOpacity,
-  StyleSheet,
-  View,
-} from 'react-native';
-import { connect } from 'react-redux';
-import { receiveEntries } from '../actions';
-import { white, purple, gray } from '../utils/colors';
+import { Text, TouchableOpacity, StyleSheet, View } from 'react-native';
+import { gray } from '../utils/colors';
+import { getDeck } from '../utils/api';
 
-class DeckDetails extends React.Component {
+export default class DeckDetails extends React.Component {
+  state = {
+    deck: {
+      title: '',
+      question: [],
+    },
+    isLoading: true,
+  };
+
+  async componentDidMount() {
+    getDeck(this.props.navigation.state.params.deck).then(deck => {
+      this.setState({
+        isLoading: typeof deck.questions.length < 1,
+        deck,
+      });
+    });
+  }
+
   render() {
-    const { deck } = this.props.navigation.state.params;
+    const { deck, isLoading } = this.state;
+
     return (
       <View style={styles.container}>
-        <Text>{this.props.decks[deck].title}</Text>
-        <Text style={styles.countContainer}>
-          {this.props.decks[deck].questions.length} cards
-        </Text>
+        <Text>{deck.title}</Text>
+        {!isLoading && (
+          <Text style={styles.countContainer}>
+            {deck.questions.length} cards
+          </Text>
+        )}
 
         <TouchableOpacity
           style={styles.button}
@@ -40,7 +53,6 @@ class DeckDetails extends React.Component {
 
 function mapStateToProps(state) {
   const { decks } = state;
-  console.log('decks', decks);
 
   return {
     state,
@@ -67,5 +79,3 @@ const styles = StyleSheet.create({
     color: gray,
   },
 });
-
-export default connect(mapStateToProps)(DeckDetails);
