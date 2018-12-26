@@ -15,8 +15,7 @@ class DeckDetails extends React.Component {
   };
 
   delete = () => {
-    this.props.remove();
-    this.props.goBack();
+    this.props.remove().then(this.props.goBack);
   };
 
   shouldComponentUpdate(nextProps) {
@@ -100,7 +99,7 @@ function mapDispatchToProps(dispatch, { navigation }) {
   return {
     remove: () => {
       dispatch(removeDeck(deck));
-      removeDeckFromStorage(deck);
+      return removeDeckFromStorage(deck);
     },
     goBack: () => {
       navigation.navigate('Decks');
