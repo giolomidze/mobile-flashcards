@@ -11,6 +11,7 @@ import { white, purple, gray } from './utils/colors';
 import { createStore } from 'redux';
 import { Provider } from 'react-redux';
 import reducer from './reducers';
+import Quiz from './components/Quiz';
 
 const Tabs = TabNavigator(
   {
@@ -69,6 +70,15 @@ const MainNavigator = StackNavigator({
   },
   AddQuestion: {
     screen: AddQuestion,
+    navigationOptions: {
+      headerTintColor: white,
+      headerStyle: {
+        backgroundColor: gray,
+      },
+    },
+  },
+  Quiz: {
+    screen: Quiz,
     navigationOptions: {
       headerTintColor: white,
       headerStyle: {
