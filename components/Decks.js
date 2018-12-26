@@ -1,49 +1,19 @@
 import React from 'react';
 import {
-  AsyncStorage,
   Text,
   TouchableOpacity,
   StyleSheet,
   ScrollView,
+  AsyncStorage,
 } from 'react-native';
 import { connect } from 'react-redux';
 import { receiveDecks } from '../actions';
-import { FLASH_CARD_DECKS_STORAGE_KEY } from '../utils/_flashcards';
 import { getDecks } from '../utils/api';
 
 class Decks extends React.Component {
-  state = {
-    decks: {
-      React: {
-        title: 'React',
-        questions: [
-          {
-            question: 'What is React?',
-            answer: 'A library for managing user interfaces',
-          },
-          {
-            question: 'Where do you make Ajax requests in React?',
-            answer: 'The componentDidMount lifecycle event',
-          },
-        ],
-      },
-      JavaScript: {
-        title: 'JavaScript',
-        questions: [
-          {
-            question: 'What is a closure?',
-            answer:
-              'The combination of a function and the lexical environment within which that function was declared.',
-          },
-        ],
-      },
-    },
-  };
-
   componentDidMount() {
-    getDecks().then(decks => {
-      this.props.dispatch(receiveDecks(decks));
-    });
+    const { dispatch } = this.props;
+    getDecks().then(decks => dispatch(receiveDecks(decks)));
   }
 
   render() {
@@ -72,15 +42,6 @@ class Decks extends React.Component {
   }
 }
 
-function mapStateToProps(state) {
-  const { decks } = state;
-
-  return {
-    isLoading: typeof decks === 'undefined',
-    decks,
-  };
-}
-
 const styles = StyleSheet.create({
   container: {
     flex: 1,
@@ -101,5 +62,14 @@ const styles = StyleSheet.create({
     color: '#FF00FF',
   },
 });
+
+function mapStateToProps(state) {
+  const { decks } = state;
+
+  return {
+    isLoading: typeof decks === 'undefined',
+    decks,
+  };
+}
 
 export default connect(mapStateToProps)(Decks);

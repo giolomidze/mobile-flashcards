@@ -1,26 +1,27 @@
 import React from 'react';
 import { Text, TouchableOpacity, StyleSheet, View } from 'react-native';
 import { gray } from '../utils/colors';
-import { getDeck } from '../utils/api';
+import { getDeck, removeDeckFromStorage } from '../utils/api';
 import { connect } from 'react-redux';
+import { removeDeck } from '../actions';
 
 class DeckDetails extends React.Component {
-  state = {
-    deck: {
-      title: '',
-      question: [],
-    },
-    isLoading: true,
+  static navigationOptions = ({ navigation }) => {
+    const { deck } = navigation.state.params;
+
+    return {
+      title: deck,
+    };
   };
 
-  async componentDidMount() {
-    const deckId = this.props.navigation.state.params.deck;
-    getDeck(deckId).then(deck => {
-      this.setState({
-        isLoading: typeof deck.questions.length < 1,
-        deck,
-      });
-    });
+  delete = () => {
+    this.props.remove();
+    this.props.goBack();
+  };
+
+  shouldComponentUpdate(nextProps) {
+    console.log('nextProps: ', nextProps);
+    return typeof nextProps.deck !== 'undefined';
   }
 
   render() {
@@ -28,11 +29,17 @@ class DeckDetails extends React.Component {
 
     return (
       <View style={styles.container}>
-        <Text>{deck.title}</Text>
+        <TouchableOpacity style={styles.button} onPress={this.delete}>
+          <Text>Delete Deck</Text>
+        </TouchableOpacity>
+
         {!isLoading && (
-          <Text style={styles.countContainer}>
-            {deck.questions.length} cards
-          </Text>
+          <View>
+            <Text>{deck.title}</Text>
+            <Text style={styles.countContainer}>
+              {deck.questions.length} cards
+            </Text>
+          </View>
         )}
 
         <TouchableOpacity
@@ -45,6 +52,7 @@ class DeckDetails extends React.Component {
         >
           <Text>Add Card</Text>
         </TouchableOpacity>
+
         <TouchableOpacity
           style={styles.button}
           onPress={() =>
@@ -80,13 +88,27 @@ const styles = StyleSheet.create({
 });
 
 function mapStateToProps(state, { navigation }) {
-  const { decks } = state;
-  const deckId = navigation.state.params.deck;
-  console.log(decks);
+  const { deck } = navigation.state.params;
   return {
-    isLoading: typeof decks === 'undefined',
-    deck: decks[deckId],
+    isLoading: typeof state.decks === 'undefined',
+    deck: state.decks[deck],
   };
 }
 
-export default connect(mapStateToProps)(DeckDetails);
+function mapDispatchToProps(dispatch, { navigation }) {
+  const { deck } = navigation.state.params;
+  return {
+    remove: () => {
+      dispatch(removeDeck(deck));
+      removeDeckFromStorage(deck);
+    },
+    goBack: () => {
+      navigation.navigate('Decks');
+    },
+  };
+}
+
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps
+)(DeckDetails);

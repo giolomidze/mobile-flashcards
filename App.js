@@ -1,3 +1,6 @@
+if (__DEV__) {
+  import('./ReactotronConfig').then(() => console.log('Reactotron Configured'));
+}
 import React from 'react';
 import { View, Platform, StatusBar } from 'react-native';
 import AddDeck from './components/AddDeck';

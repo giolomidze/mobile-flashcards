@@ -2,6 +2,7 @@ import {
   RECEIVE_ENTRIES as RECEIVE_DECKS,
   ADD_ENTRY,
   ADD_QUESTION,
+  REMOVE_DECK,
 } from '../actions';
 
 function entries(state = {}, action) {
@@ -39,6 +40,11 @@ function entries(state = {}, action) {
             ],
           },
         },
+      };
+    case REMOVE_DECK:
+      delete state.decks[action.deck];
+      return {
+        ...state,
       };
     default:
       return state;

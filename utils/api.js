@@ -11,17 +11,59 @@ export function submitEntry({ entry, key }) {
     })
   );
 }
+function setDummyData() {
+  let dummyData = {
+    React: {
+      title: 'React',
+      questions: [
+        {
+          question: 'What is React?',
+          answer: 'A library for managing user interfaces',
+        },
+        {
+          question: 'Where do you make Ajax requests in React?',
+          answer: 'The componentDidMount lifecycle event',
+        },
+      ],
+    },
+    JavaScript: {
+      title: 'JavaScript',
+      questions: [
+        {
+          question: 'What is a closure?',
+          answer:
+            'The combination of a function and the lexical environment within which that function was declared.',
+        },
+      ],
+    },
+  };
 
-export async function getDecks() {
-  return JSON.parse(await AsyncStorage.getItem(FLASH_CARD_DECKS_STORAGE_KEY));
+  AsyncStorage.setItem(FLASH_CARD_DECKS_STORAGE_KEY, JSON.stringify(dummyData));
+
+  return dummyData;
 }
 
-export async function getDeck(deckId) {
-  const decks = await getDecks();
-  return await decks[deckId];
+export function formatDecksResults(results) {
+  console.log('results from formatting: ', results);
+  return results === null ? setDummyData() : JSON.parse(results);
 }
 
-export async function saveDeckTitle(deckTitle) {
+export function getDecks() {
+  return AsyncStorage.getItem(FLASH_CARD_DECKS_STORAGE_KEY).then(
+    formatDecksResults
+  );
+}
+
+export function getDeck(deckId) {
+  // const decks = getDecks();
+  // return decks[deckId];
+
+  return getDecks().then(decks => {
+    return decks[deckId];
+  });
+}
+
+export function saveDeckTitle(deckTitle) {
   return AsyncStorage.mergeItem(
     FLASH_CARD_DECKS_STORAGE_KEY,
     JSON.stringify({
@@ -33,8 +75,7 @@ export async function saveDeckTitle(deckTitle) {
   );
 }
 
-export async function addCardToDeck(deckTitle, card) {
-  console.log('only title: ', deckTitle.title);
+export function addCardToDeck(deckTitle, card) {
   return AsyncStorage.mergeItem(
     FLASH_CARD_DECKS_STORAGE_KEY,
     JSON.stringify({
@@ -43,6 +84,18 @@ export async function addCardToDeck(deckTitle, card) {
       },
     })
   );
+}
+
+export function removeDeckFromStorage(key) {
+  console.log('key received for removal', key);
+  return AsyncStorage.getItem(FLASH_CARD_DECKS_STORAGE_KEY).then(results => {
+    const data = JSON.parse(results);
+    data[key] = undefined;
+    delete data[key];
+    console.log('removal from async:', data);
+    AsyncStorage.setItem(FLASH_CARD_DECKS_STORAGE_KEY, JSON.stringify(data));
+    console.log('get filtered decks:', getDecks());
+  });
 }
 
 // getDecks: return all of the decks along with their titles, questions, and answers.
