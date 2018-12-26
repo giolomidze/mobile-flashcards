@@ -8,6 +8,7 @@ import {
 } from 'react-native';
 import { connect } from 'react-redux';
 import { white, purple, blue } from '../utils/colors';
+import { addCardToDeck } from '../utils/api';
 import { addQuestion } from '../actions';
 
 class AddQuestion extends React.Component {
@@ -19,6 +20,11 @@ class AddQuestion extends React.Component {
   submit = () => {
     const { deck } = this.props.navigation.state.params;
 
+    const card = {
+      question: this.state.question,
+      answer: this.state.answer,
+    };
+
     this.props.dispatch(
       addQuestion({
         deck: deck,
@@ -27,8 +33,9 @@ class AddQuestion extends React.Component {
       })
     );
 
+    addCardToDeck(deck, card);
+
     this.props.navigation.goBack();
-    // this.props.navigation.dispatch(NavigationActions.back({ key: 'Decks' }));
   };
 
   onQuestionChange = input => {

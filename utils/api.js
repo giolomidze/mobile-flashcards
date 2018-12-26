@@ -33,6 +33,18 @@ export async function saveDeckTitle(deckTitle) {
   );
 }
 
+export async function addCardToDeck(deckTitle, card) {
+  console.log('only title: ', deckTitle.title);
+  return AsyncStorage.mergeItem(
+    FLASH_CARD_DECKS_STORAGE_KEY,
+    JSON.stringify({
+      [deckTitle.title]: {
+        questions: [card],
+      },
+    })
+  );
+}
+
 // getDecks: return all of the decks along with their titles, questions, and answers.
 // getDeck: take in a single id argument and return the deck associated with that id.
 // saveDeckTitle: take in a single title argument and add it to the decks.

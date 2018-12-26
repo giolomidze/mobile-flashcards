@@ -33,9 +33,11 @@ class AddDeck extends React.Component {
 
   submit = () => {
     this.props.dispatch(addEntry(this.state.deckTitle));
-    this.props.navigation.goBack();
-    saveDeckTitle(this.state.deckTitle);
-    // this.props.navigation.dispatch(NavigationActions.back({ key: 'Decks' }));
+    saveDeckTitle(this.state.deckTitle).then(() => {
+      this.props.navigation.navigate('DeckDetails', {
+        deck: this.state.deckTitle,
+      });
+    });
   };
 
   onChange = input => {
@@ -105,5 +107,4 @@ const styles = StyleSheet.create({
     padding: 10,
   },
 });
-
 export default connect()(AddDeck);

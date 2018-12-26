@@ -6,34 +6,52 @@ import {
   StyleSheet,
   ScrollView,
 } from 'react-native';
-import { getDecks } from '../utils/api';
+import { connect } from 'react-redux';
+import { receiveDecks } from '../actions';
 import { FLASH_CARD_DECKS_STORAGE_KEY } from '../utils/_flashcards';
+import { getDecks } from '../utils/api';
 
-export default class Decks extends React.Component {
+class Decks extends React.Component {
   state = {
-    decks: {},
-    isLoading: true,
+    decks: {
+      React: {
+        title: 'React',
+        questions: [
+          {
+            question: 'What is React?',
+            answer: 'A library for managing user interfaces',
+          },
+          {
+            question: 'Where do you make Ajax requests in React?',
+            answer: 'The componentDidMount lifecycle event',
+          },
+        ],
+      },
+      JavaScript: {
+        title: 'JavaScript',
+        questions: [
+          {
+            question: 'What is a closure?',
+            answer:
+              'The combination of a function and the lexical environment within which that function was declared.',
+          },
+        ],
+      },
+    },
   };
 
   componentDidMount() {
     getDecks().then(decks => {
-      this.setState({
-        decks,
-        isLoading: false,
-      });
+      this.props.dispatch(receiveDecks(decks));
     });
   }
 
   render() {
-    console.log('local decks', this.state.decks);
-    const { decks, isLoading } = this.state;
     return (
       <ScrollView>
-        {!isLoading && Object.keys(this.state.decks).length < 1 ? (
-          <Text>0 Decks</Text>
-        ) : (
-          Object.keys(decks).map(deck => {
-            const { title, questions } = decks[deck];
+        {!this.props.isLoading &&
+          Object.keys(this.props.decks).map(deck => {
+            const { title, questions } = this.props.decks[deck];
             return (
               <TouchableOpacity
                 key={title}
@@ -48,11 +66,19 @@ export default class Decks extends React.Component {
                 <Text>{questions.length} cards</Text>
               </TouchableOpacity>
             );
-          })
-        )}
+          })}
       </ScrollView>
     );
   }
+}
+
+function mapStateToProps(state) {
+  const { decks } = state;
+
+  return {
+    isLoading: typeof decks === 'undefined',
+    decks,
+  };
 }
 
 const styles = StyleSheet.create({
@@ -75,3 +101,5 @@ const styles = StyleSheet.create({
     color: '#FF00FF',
   },
 });
+
+export default connect(mapStateToProps)(Decks);

@@ -1,11 +1,16 @@
-import { RECEIVE_ENTRIES, ADD_ENTRY, ADD_QUESTION } from '../actions';
+import {
+  RECEIVE_ENTRIES as RECEIVE_DECKS,
+  ADD_ENTRY,
+  ADD_QUESTION,
+} from '../actions';
 
 function entries(state = {}, action) {
+  console.log(action);
   switch (action.type) {
-    case RECEIVE_ENTRIES:
+    case RECEIVE_DECKS:
       return {
         ...state,
-        decks: action.entries,
+        decks: action.decks,
       };
     case ADD_ENTRY:
       return {
@@ -23,13 +28,13 @@ function entries(state = {}, action) {
         ...state,
         decks: {
           ...state.decks,
-          [action.entry.deck]: {
-            ...state.decks[action.entry.deck],
+          [action.card.deck.title]: {
+            ...state.decks[action.card.deck.title],
             questions: [
-              ...state.decks[action.entry.deck].questions,
+              ...state.decks[action.card.deck.title].questions,
               {
-                question: action.entry.question,
-                answer: action.entry.answer,
+                question: action.card.question,
+                answer: action.card.answer,
               },
             ],
           },

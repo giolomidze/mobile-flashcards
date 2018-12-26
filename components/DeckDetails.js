@@ -1,9 +1,10 @@
 import React from 'react';
 import { Text, TouchableOpacity, StyleSheet, View } from 'react-native';
 import { gray } from '../utils/colors';
-import { getDeck, getDecks } from '../utils/api';
+import { getDeck } from '../utils/api';
+import { connect } from 'react-redux';
 
-export default class DeckDetails extends React.Component {
+class DeckDetails extends React.Component {
   state = {
     deck: {
       title: '',
@@ -15,7 +16,6 @@ export default class DeckDetails extends React.Component {
   async componentDidMount() {
     const deckId = this.props.navigation.state.params.deck;
     getDeck(deckId).then(deck => {
-      console.log('get one deck: ', deck);
       this.setState({
         isLoading: typeof deck.questions.length < 1,
         deck,
@@ -24,7 +24,7 @@ export default class DeckDetails extends React.Component {
   }
 
   render() {
-    const { deck, isLoading } = this.state;
+    const { deck, isLoading } = this.props;
 
     return (
       <View style={styles.container}>
@@ -53,16 +53,6 @@ export default class DeckDetails extends React.Component {
   }
 }
 
-function mapStateToProps(state) {
-  const { decks } = state;
-
-  return {
-    state,
-    isLoading: typeof decks === 'undefined',
-    decks,
-  };
-}
-
 const styles = StyleSheet.create({
   container: {
     flex: 1,
@@ -81,3 +71,15 @@ const styles = StyleSheet.create({
     color: gray,
   },
 });
+
+function mapStateToProps(state, { navigation }) {
+  const { decks } = state;
+  const deckId = navigation.state.params.deck;
+  console.log(decks);
+  return {
+    isLoading: typeof decks === 'undefined',
+    deck: decks[deckId],
+  };
+}
+
+export default connect(mapStateToProps)(DeckDetails);

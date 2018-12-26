@@ -2,10 +2,10 @@ export const RECEIVE_ENTRIES = 'RECEIVE_ENTRIES';
 export const ADD_ENTRY = 'ADD_ENTRY';
 export const ADD_QUESTION = 'ADD_QUESTION';
 
-export function receiveEntries(entries) {
+export function receiveDecks(decks) {
   return {
     type: RECEIVE_ENTRIES,
-    entries,
+    decks,
   };
 }
 
@@ -16,9 +16,9 @@ export function addEntry(entry) {
   };
 }
 
-export function addQuestion(question) {
+export function addQuestion(card) {
   return {
     type: ADD_QUESTION,
-    entry: question,
+    card,
   };
 }
