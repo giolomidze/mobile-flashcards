@@ -7,6 +7,7 @@ class Quiz extends React.Component {
     currentQuestion: 0,
     showAnswer: false,
     questionLength: 0,
+    answerLog: {},
   };
   componentDidMount() {
     console.log(this.props.deck.questions);
@@ -29,10 +30,31 @@ class Quiz extends React.Component {
     }
   };
 
+  correct = () => {
+    this.setState({
+      answerLog: Object.assign(
+        { [this.state.currentQuestion]: 'correct' },
+        this.state.answerLog
+      ),
+    });
+    this.nextQuestion();
+  };
+
+  incorrect = () => {
+    this.setState({
+      answerLog: Object.assign(
+        { [this.state.currentQuestion]: 'incorrect' },
+        this.state.answerLog
+      ),
+    });
+    this.nextQuestion();
+  };
+
   toggleShowAnswer = () => {
     this.setState(state => ({
       showAnswer: !state.showAnswer,
     }));
+    console.log(this.state);
   };
 
   render() {
@@ -55,10 +77,10 @@ class Quiz extends React.Component {
             {!showAnswer ? `Show Answer` : `Show Question`}
           </Text>
         </TouchableOpacity>
-        <TouchableOpacity>
-          <Text onPress={this.nextQuestion}>Correct</Text>
+        <TouchableOpacity onPress={this.correct}>
+          <Text>Correct</Text>
         </TouchableOpacity>
-        <TouchableOpacity>
+        <TouchableOpacity onPress={this.incorrect}>
           <Text>Incorrect</Text>
         </TouchableOpacity>
       </View>
