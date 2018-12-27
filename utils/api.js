@@ -44,7 +44,6 @@ function setDummyData() {
 }
 
 export function formatDecksResults(results) {
-  console.log('results from formatting: ', results);
   return results === null ? setDummyData() : JSON.parse(results);
 }
 
@@ -76,25 +75,30 @@ export function saveDeckTitle(deckTitle) {
 }
 
 export function addCardToDeck(deckTitle, card) {
-  return AsyncStorage.mergeItem(
-    FLASH_CARD_DECKS_STORAGE_KEY,
-    JSON.stringify({
-      [deckTitle.title]: {
-        questions: [card],
-      },
-    })
-  );
+  getDecks().then(decks => {
+    console.log('api decks:', decks);
+    console.log('deckTitle:', deckTitle);
+    console.log('card:', card);
+    console.log('deck:', decks[deckTitle.title]);
+    decks[deckTitle.title].questions.push(card);
+    AsyncStorage.setItem(FLASH_CARD_DECKS_STORAGE_KEY, JSON.stringify(decks));
+  });
+  // return AsyncStorage.mergeItem(
+  //   FLASH_CARD_DECKS_STORAGE_KEY,
+  //   JSON.stringify({
+  //     [deckTitle.title]: {
+  //       questions: [card],
+  //     },
+  //   })
+  // );
 }
 
 export function removeDeckFromStorage(key) {
-  console.log('key received for removal', key);
   return AsyncStorage.getItem(FLASH_CARD_DECKS_STORAGE_KEY).then(results => {
     const data = JSON.parse(results);
     data[key] = undefined;
     delete data[key];
-    console.log('removal from async:', data);
     AsyncStorage.setItem(FLASH_CARD_DECKS_STORAGE_KEY, JSON.stringify(data));
-    console.log('get filtered decks:', getDecks());
   });
 }
 

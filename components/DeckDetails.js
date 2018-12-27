@@ -1,7 +1,7 @@
 import React from 'react';
 import { Text, TouchableOpacity, StyleSheet, View } from 'react-native';
 import { gray } from '../utils/colors';
-import { getDeck, removeDeckFromStorage } from '../utils/api';
+import { removeDeckFromStorage } from '../utils/api';
 import { connect } from 'react-redux';
 import { removeDeck } from '../actions';
 
@@ -19,7 +19,6 @@ class DeckDetails extends React.Component {
   };
 
   shouldComponentUpdate(nextProps) {
-    console.log('nextProps: ', nextProps);
     return typeof nextProps.deck !== 'undefined';
   }
 
