@@ -62,11 +62,21 @@ class Quiz extends React.Component {
     console.log(this.state);
   };
 
+  restartQuiz = () => {
+    this.setState({
+      currentCard: 0,
+      showAnswer: false,
+      answerLog: {},
+      quizCompleted: false,
+    });
+  };
+
   render() {
     const { deck } = this.props;
     const { questions: cards } = deck;
     const { currentCard, questionLength, showAnswer } = this.state;
-    Object.values(this.state.answerLog).filter(value => value === 'correct');
+    console.log('deck: ', deck);
+
     if (this.state.quizCompleted) {
       const correctAnswers = Object.values(this.state.answerLog).filter(
         value => value === 'correct'
@@ -76,6 +86,18 @@ class Quiz extends React.Component {
         <View>
           <Text>Quiz Completed</Text>
           <Text>Correct answers: {correctAnswers}</Text>
+          <TouchableOpacity onPress={this.restartQuiz}>
+            <Text>Restart Quiz</Text>
+          </TouchableOpacity>
+          <TouchableOpacity
+            onPress={() =>
+              this.props.navigate('DeckDetails', {
+                deck: deck.title,
+              })
+            }
+          >
+            <Text>Back to Deck</Text>
+          </TouchableOpacity>
         </View>
       );
     } else {
@@ -111,6 +133,7 @@ function mapStateToProps(state, { navigation }) {
   return {
     state,
     deck,
+    navigate: navigation.navigate,
   };
 }
 
