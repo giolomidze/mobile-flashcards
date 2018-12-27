@@ -57,8 +57,10 @@ class AddQuestion extends React.Component {
         <TextInput style={styles.input} onChangeText={this.onQuestionChange} />
         <Text>Answer</Text>
         <TextInput style={styles.input} onChangeText={this.onAnswerChange} />
-        <TouchableOpacity>
-          <Text onPress={this.submit}>SUBMIT</Text>
+        <TouchableOpacity style={styles.AndroidSubmitBtn}>
+          <Text onPress={this.submit} style={styles.submitBtnText}>
+            SUBMIT
+          </Text>
         </TouchableOpacity>
       </KeyboardAvoidingView>
     );
@@ -91,7 +93,7 @@ const styles = StyleSheet.create({
     paddingRight: 30,
     height: 45,
     borderRadius: 2,
-    alignSelf: 'flex-end',
+    alignSelf: 'center',
     justifyContent: 'center',
     alignItems: 'center',
   },

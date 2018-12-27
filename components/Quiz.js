@@ -1,7 +1,8 @@
 import React from 'react';
 import { connect } from 'react-redux';
-import { Text, TouchableOpacity, View } from 'react-native';
+import { Text, TouchableOpacity, View, StyleSheet } from 'react-native';
 import { setLocalNotification, clearLocalNotification } from '../utils/helpers';
+import { gray } from '../utils/colors';
 
 class Quiz extends React.Component {
   static navigationOptions = ({ navigation }) => {
@@ -17,6 +18,7 @@ class Quiz extends React.Component {
     answerLog: {},
     quizCompleted: false,
   };
+
   componentDidMount() {
     console.log(this.props.deck.questions);
     console.log('question: ', this.state.currentCard);
@@ -113,20 +115,24 @@ class Quiz extends React.Component {
         <View>
           <Text>Current question: {currentCard + 1}</Text>
           <Text>Total questions:{questionLength}</Text>
-          {!showAnswer ? (
-            <Text>{cards[currentCard].question}</Text>
-          ) : (
-            <Text>{cards[currentCard].answer}</Text>
-          )}
-          <TouchableOpacity>
-            <Text onPress={this.toggleShowAnswer}>
-              {!showAnswer ? `Show Answer` : `Show Question`}
-            </Text>
+          <Text style={styles.cardText}>
+            {!showAnswer
+              ? cards[currentCard].question
+              : cards[currentCard].answer}
+          </Text>
+          <TouchableOpacity
+            style={styles.answerButton}
+            onPress={this.toggleShowAnswer}
+          >
+            <Text>{!showAnswer ? `Show Answer` : `Show Question`}</Text>
           </TouchableOpacity>
-          <TouchableOpacity onPress={this.correct}>
+          <TouchableOpacity onPress={this.correct} style={styles.correctButton}>
             <Text>Correct</Text>
           </TouchableOpacity>
-          <TouchableOpacity onPress={this.incorrect}>
+          <TouchableOpacity
+            onPress={this.incorrect}
+            style={styles.incorrectButton}
+          >
             <Text>Incorrect</Text>
           </TouchableOpacity>
         </View>
@@ -143,5 +149,33 @@ function mapStateToProps(state, { navigation }) {
     navigate: navigation.navigate,
   };
 }
+
+const styles = StyleSheet.create({
+  correctButton: {
+    alignItems: 'center',
+    backgroundColor: 'green',
+    padding: 10,
+    margin: 10,
+  },
+  incorrectButton: {
+    alignItems: 'center',
+    backgroundColor: '#F19846',
+    padding: 10,
+    margin: 10,
+  },
+  cardText: {
+    alignItems: 'center',
+    textAlign: 'center',
+    fontSize: 22,
+    padding: 10,
+    margin: 10,
+  },
+  answerButton: {
+    alignItems: 'center',
+    backgroundColor: '#AFAFAF',
+    padding: 10,
+    margin: 10,
+  },
+});
 
 export default connect(mapStateToProps)(Quiz);

@@ -29,7 +29,7 @@ class DeckDetails extends React.Component {
       <View style={styles.container}>
         {!isLoading && (
           <View>
-            <Text>{deck.title}</Text>
+            <Text style={styles.title}>{deck.title}</Text>
             <Text style={styles.countContainer}>
               {deck.questions.length} cards
             </Text>
@@ -81,12 +81,23 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     backgroundColor: 'orange',
     padding: 10,
-    margin: 10,
+    marginTop: 40,
+    marginLeft: 10,
+    marginRight: 10,
   },
-  countContainer: {
+  title: {
+    textAlign: 'center',
     alignItems: 'center',
     padding: 10,
     color: gray,
+    fontSize: 22,
+  },
+  countContainer: {
+    fontSize: 15,
+    textAlign: 'center',
+    alignItems: 'center',
+    color: gray,
+    paddingLeft: 10,
   },
 });
 
