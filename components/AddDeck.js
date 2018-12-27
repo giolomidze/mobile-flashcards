@@ -6,11 +6,11 @@ import {
   Platform,
   TextInput,
   KeyboardAvoidingView,
+  Keyboard,
 } from 'react-native';
 import { purple, white, blue } from '../utils/colors';
 import { connect } from 'react-redux';
 import { addEntry } from '../actions';
-import { NavigationActions } from 'react-navigation';
 import { saveDeckTitle } from '../utils/api';
 
 function SubmitBtn({ onPress }) {
@@ -32,6 +32,7 @@ class AddDeck extends React.Component {
   };
 
   submit = () => {
+    Keyboard.dismiss();
     this.props.dispatch(addEntry(this.state.deckTitle));
     saveDeckTitle(this.state.deckTitle).then(() => {
       this.props.navigation.navigate('DeckDetails', {
