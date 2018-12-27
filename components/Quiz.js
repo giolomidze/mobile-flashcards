@@ -4,6 +4,12 @@ import { Text, TouchableOpacity, View } from 'react-native';
 import { setLocalNotification, clearLocalNotification } from '../utils/helpers';
 
 class Quiz extends React.Component {
+  static navigationOptions = ({ navigation }) => {
+    return {
+      title: `Quiz of ${navigation.state.params.deck.title}`,
+    };
+  };
+
   state = {
     currentCard: 0,
     showAnswer: false,
