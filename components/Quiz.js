@@ -35,6 +35,9 @@ class Quiz extends React.Component {
 
     return (
       <View>
+        <Text>
+          {currentQuestion + 1} / {questionLength}
+        </Text>
         <Text>{questions[currentQuestion].question}</Text>
         <Text>{questions[currentQuestion].answer}</Text>
         <TouchableOpacity>
