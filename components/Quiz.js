@@ -4,36 +4,41 @@ import { Text, TouchableOpacity, View } from 'react-native';
 
 class Quiz extends React.Component {
   state = {
-    currentQuestion: 0,
+    currentCard: 0,
     showAnswer: false,
     questionLength: 0,
     answerLog: {},
+    quizCompleted: false,
   };
   componentDidMount() {
     console.log(this.props.deck.questions);
-    console.log('question: ', this.state.currentQuestion);
+    console.log('question: ', this.state.currentCard);
     this.setState({
       questionLength: this.props.deck.questions.length,
     });
   }
 
   nextQuestion = () => {
-    const { currentQuestion, questionLength } = this.state;
+    const { currentCard: currentQuestion, questionLength } = this.state;
 
     const incrementedQuestion = currentQuestion + 1;
 
     if (incrementedQuestion < questionLength) {
       this.setState(state => ({
-        currentQuestion: state.currentQuestion + 1,
+        currentCard: state.currentCard + 1,
         showAnswer: false,
       }));
+    } else {
+      this.setState({
+        quizCompleted: true,
+      });
     }
   };
 
   correct = () => {
     this.setState({
       answerLog: Object.assign(
-        { [this.state.currentQuestion]: 'correct' },
+        { [this.state.currentCard]: 'correct' },
         this.state.answerLog
       ),
     });
@@ -43,7 +48,7 @@ class Quiz extends React.Component {
   incorrect = () => {
     this.setState({
       answerLog: Object.assign(
-        { [this.state.currentQuestion]: 'incorrect' },
+        { [this.state.currentCard]: 'incorrect' },
         this.state.answerLog
       ),
     });
@@ -59,32 +64,45 @@ class Quiz extends React.Component {
 
   render() {
     const { deck } = this.props;
-    const { questions } = deck;
-    const { currentQuestion, questionLength, showAnswer } = this.state;
+    const { questions: cards } = deck;
+    const { currentCard, questionLength, showAnswer } = this.state;
+    Object.values(this.state.answerLog).filter(value => value === 'correct');
+    if (this.state.quizCompleted) {
+      const correctAnswers = Object.values(this.state.answerLog).filter(
+        value => value === 'correct'
+      ).length;
 
-    return (
-      <View>
-        <Text>
-          {currentQuestion + 1} / {questionLength}
-        </Text>
-        {!showAnswer ? (
-          <Text>{questions[currentQuestion].question}</Text>
-        ) : (
-          <Text>{questions[currentQuestion].answer}</Text>
-        )}
-        <TouchableOpacity>
-          <Text onPress={this.toggleShowAnswer}>
-            {!showAnswer ? `Show Answer` : `Show Question`}
+      return (
+        <View>
+          <Text>Quiz Completed</Text>
+          <Text>Correct answers: {correctAnswers}</Text>
+        </View>
+      );
+    } else {
+      return (
+        <View>
+          <Text>
+            {currentCard + 1} / {questionLength}
           </Text>
-        </TouchableOpacity>
-        <TouchableOpacity onPress={this.correct}>
-          <Text>Correct</Text>
-        </TouchableOpacity>
-        <TouchableOpacity onPress={this.incorrect}>
-          <Text>Incorrect</Text>
-        </TouchableOpacity>
-      </View>
-    );
+          {!showAnswer ? (
+            <Text>{cards[currentCard].question}</Text>
+          ) : (
+            <Text>{cards[currentCard].answer}</Text>
+          )}
+          <TouchableOpacity>
+            <Text onPress={this.toggleShowAnswer}>
+              {!showAnswer ? `Show Answer` : `Show Question`}
+            </Text>
+          </TouchableOpacity>
+          <TouchableOpacity onPress={this.correct}>
+            <Text>Correct</Text>
+          </TouchableOpacity>
+          <TouchableOpacity onPress={this.incorrect}>
+            <Text>Incorrect</Text>
+          </TouchableOpacity>
+        </View>
+      );
+    }
   }
 }
 
