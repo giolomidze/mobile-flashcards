@@ -10,7 +10,7 @@ import {
 } from 'react-native';
 import { purple, white, blue } from '../utils/colors';
 import { connect } from 'react-redux';
-import { addEntry } from '../actions';
+import { addDeck } from '../actions';
 import { saveDeckTitle } from '../utils/api';
 
 function SubmitBtn({ onPress }) {
@@ -34,7 +34,7 @@ class AddDeck extends React.Component {
   submit = () => {
     this.textInput.clear();
     Keyboard.dismiss();
-    this.props.dispatch(addEntry(this.state.deckTitle));
+    this.props.dispatch(addDeck(this.state.deckTitle));
     saveDeckTitle(this.state.deckTitle).then(() => {
       this.props.navigation.navigate('DeckDetails', {
         deck: this.state.deckTitle,

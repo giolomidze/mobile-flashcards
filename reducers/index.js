@@ -1,6 +1,6 @@
 import {
   RECEIVE_ENTRIES as RECEIVE_DECKS,
-  ADD_ENTRY,
+  ADD_ENTRY as ADD_DECK,
   ADD_QUESTION,
   REMOVE_DECK,
 } from '../actions';
@@ -12,13 +12,13 @@ function entries(state = {}, action) {
         ...state,
         decks: action.decks,
       };
-    case ADD_ENTRY:
+    case ADD_DECK:
       return {
         ...state,
         decks: {
           ...state.decks,
-          [action.entry]: {
-            title: action.entry,
+          [action.deck]: {
+            title: action.deck,
             questions: [],
           },
         },
