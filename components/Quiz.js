@@ -24,22 +24,37 @@ class Quiz extends React.Component {
     if (incrementedQuestion < questionLength) {
       this.setState(state => ({
         currentQuestion: state.currentQuestion + 1,
+        showAnswer: false,
       }));
     }
+  };
+
+  toggleShowAnswer = () => {
+    this.setState(state => ({
+      showAnswer: !state.showAnswer,
+    }));
   };
 
   render() {
     const { deck } = this.props;
     const { questions } = deck;
-    const { currentQuestion, questionLength } = this.state;
+    const { currentQuestion, questionLength, showAnswer } = this.state;
 
     return (
       <View>
         <Text>
           {currentQuestion + 1} / {questionLength}
         </Text>
-        <Text>{questions[currentQuestion].question}</Text>
-        <Text>{questions[currentQuestion].answer}</Text>
+        {!showAnswer ? (
+          <Text>{questions[currentQuestion].question}</Text>
+        ) : (
+          <Text>{questions[currentQuestion].answer}</Text>
+        )}
+        <TouchableOpacity>
+          <Text onPress={this.toggleShowAnswer}>
+            {!showAnswer ? `Show Answer` : `Show Question`}
+          </Text>
+        </TouchableOpacity>
         <TouchableOpacity>
           <Text onPress={this.nextQuestion}>Correct</Text>
         </TouchableOpacity>
