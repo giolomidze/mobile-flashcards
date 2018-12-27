@@ -1,6 +1,7 @@
 import React from 'react';
 import { connect } from 'react-redux';
 import { Text, TouchableOpacity, View } from 'react-native';
+import { setLocalNotification, clearLocalNotification } from '../utils/helpers';
 
 class Quiz extends React.Component {
   state = {
@@ -78,6 +79,7 @@ class Quiz extends React.Component {
     console.log('deck: ', deck);
 
     if (this.state.quizCompleted) {
+      clearLocalNotification().then(setLocalNotification);
       const correctAnswers = Object.values(this.state.answerLog).filter(
         value => value === 'correct'
       ).length;
@@ -103,9 +105,8 @@ class Quiz extends React.Component {
     } else {
       return (
         <View>
-          <Text>
-            {currentCard + 1} / {questionLength}
-          </Text>
+          <Text>Current question: {currentCard + 1}</Text>
+          <Text>Total questions:{questionLength}</Text>
           {!showAnswer ? (
             <Text>{cards[currentCard].question}</Text>
           ) : (
