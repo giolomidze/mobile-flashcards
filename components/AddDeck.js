@@ -21,7 +21,7 @@ function SubmitBtn({ onPress }) {
       }
       onPress={onPress}
     >
-      <Text style={styles.submitBtnText}>SUBMIT</Text>
+      <Text style={styles.submitBtnText}>Create Deck</Text>
     </TouchableOpacity>
   );
 }
@@ -49,7 +49,9 @@ class AddDeck extends React.Component {
   render() {
     return (
       <KeyboardAvoidingView style={styles.container} behavior="padding">
-        <Text>What is the title of your new deck?</Text>
+        <Text style={styles.questionText}>
+          What is the title of your new deck?
+        </Text>
         <TextInput style={styles.input} onChangeText={this.onChange} />
         <SubmitBtn onPress={this.submit} />
       </KeyboardAvoidingView>
@@ -83,7 +85,7 @@ const styles = StyleSheet.create({
     paddingRight: 30,
     height: 45,
     borderRadius: 2,
-    alignSelf: 'flex-end',
+    alignSelf: 'center',
     justifyContent: 'center',
     alignItems: 'center',
   },
@@ -105,6 +107,10 @@ const styles = StyleSheet.create({
     borderColor: blue,
     borderWidth: 1,
     padding: 10,
+  },
+  questionText: {
+    fontSize: 22,
+    textAlign: 'center',
   },
 });
 export default connect()(AddDeck);

@@ -27,10 +27,6 @@ class DeckDetails extends React.Component {
 
     return (
       <View style={styles.container}>
-        <TouchableOpacity style={styles.button} onPress={this.delete}>
-          <Text>Delete Deck</Text>
-        </TouchableOpacity>
-
         {!isLoading && (
           <View>
             <Text>{deck.title}</Text>
@@ -59,7 +55,10 @@ class DeckDetails extends React.Component {
             })
           }
         >
-          <Text>Start Quiz</Text>
+          <Text>Start a Quiz</Text>
+        </TouchableOpacity>
+        <TouchableOpacity style={styles.deleteButton} onPress={this.delete}>
+          <Text>Delete Deck</Text>
         </TouchableOpacity>
       </View>
     );
@@ -75,6 +74,12 @@ const styles = StyleSheet.create({
   button: {
     alignItems: 'center',
     backgroundColor: '#DDDDDD',
+    padding: 10,
+    margin: 10,
+  },
+  deleteButton: {
+    alignItems: 'center',
+    backgroundColor: 'orange',
     padding: 10,
     margin: 10,
   },
