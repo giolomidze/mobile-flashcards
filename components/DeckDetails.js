@@ -48,6 +48,7 @@ class DeckDetails extends React.Component {
         </TouchableOpacity>
 
         <TouchableOpacity
+          disabled={deck.questions.length < 1}
           style={styles.button}
           onPress={() =>
             this.props.navigation.navigate('Quiz', {
@@ -55,7 +56,11 @@ class DeckDetails extends React.Component {
             })
           }
         >
-          <Text>Start a Quiz</Text>
+          <Text>
+            {deck.questions.length > 0
+              ? `Start a Quiz`
+              : 'Add cards to take a quiz'}
+          </Text>
         </TouchableOpacity>
         <TouchableOpacity style={styles.deleteButton} onPress={this.delete}>
           <Text>Delete Deck</Text>
