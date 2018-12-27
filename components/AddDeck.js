@@ -32,6 +32,7 @@ class AddDeck extends React.Component {
   };
 
   submit = () => {
+    this.textInput.clear();
     Keyboard.dismiss();
     this.props.dispatch(addEntry(this.state.deckTitle));
     saveDeckTitle(this.state.deckTitle).then(() => {
@@ -53,7 +54,13 @@ class AddDeck extends React.Component {
         <Text style={styles.questionText}>
           What is the title of your new deck?
         </Text>
-        <TextInput style={styles.input} onChangeText={this.onChange} />
+        <TextInput
+          ref={input => {
+            this.textInput = input;
+          }}
+          style={styles.input}
+          onChangeText={this.onChange}
+        />
         <SubmitBtn onPress={this.submit} />
       </KeyboardAvoidingView>
     );
