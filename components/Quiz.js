@@ -20,8 +20,6 @@ class Quiz extends React.Component {
   };
 
   componentDidMount() {
-    console.log(this.props.deck.questions);
-    console.log('question: ', this.state.currentCard);
     this.setState({
       questionLength: this.props.deck.questions.length,
     });
@@ -68,7 +66,6 @@ class Quiz extends React.Component {
     this.setState(state => ({
       showAnswer: !state.showAnswer,
     }));
-    console.log(this.state);
   };
 
   restartQuiz = () => {
@@ -84,7 +81,6 @@ class Quiz extends React.Component {
     const { deck } = this.props;
     const { questions: cards } = deck;
     const { currentCard, questionLength, showAnswer } = this.state;
-    console.log('deck: ', deck);
 
     if (this.state.quizCompleted) {
       clearLocalNotification().then(setLocalNotification);
@@ -94,12 +90,18 @@ class Quiz extends React.Component {
 
       return (
         <View>
-          <Text>Quiz Completed</Text>
-          <Text>Correct answers: {correctAnswers}</Text>
-          <TouchableOpacity onPress={this.restartQuiz}>
+          <Text style={styles.cardText}>Quiz has been Completed</Text>
+          <Text style={styles.correctAnswers}>
+            Correct answers: {correctAnswers} out of {questionLength}
+          </Text>
+          <TouchableOpacity
+            style={styles.answerButton}
+            onPress={this.restartQuiz}
+          >
             <Text>Restart Quiz</Text>
           </TouchableOpacity>
           <TouchableOpacity
+            style={styles.answerButton}
             onPress={() =>
               this.props.navigate('DeckDetails', {
                 deck: deck.title,
@@ -167,6 +169,13 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     textAlign: 'center',
     fontSize: 22,
+    padding: 10,
+    margin: 10,
+  },
+  correctAnswers: {
+    alignItems: 'center',
+    textAlign: 'center',
+    fontSize: 18,
     padding: 10,
     margin: 10,
   },
